@@ -10,16 +10,14 @@ function reconcileOrder(existingBook, incomingOrder) {
 
     const order = existingBook[i] //get one order object
     if (order.type === incomingOrder.type) {
-
-      existingBook.push(incomingOrder)
-      return existingBook
+      continue
     }
 
     // if order type is equal ('buy' && 'buy') || ('sell' && 'sell') but does not match add to order book
-    // if (incomingOrder.type !== order.type && incomingOrder.price !== order.price) {
+    if (incomingOrder.type !== order.type && incomingOrder.price !== order.price) {
 
-    // return existingBook.concat(incomingOrder)
-    // }
+      return existingBook.concat(incomingOrder)
+    }
 
     // attempt to fufill orders and remove existing order if there is existing order with same QTY
     if (incomingOrder.price === order.price && incomingOrder.quantity === order.quantity
@@ -36,7 +34,7 @@ function reconcileOrder(existingBook, incomingOrder) {
 
       let [adjustOrder] = existingBook.splice(i, 1)
       adjustOrder.quantity = adjustOrder.quantity - incomingOrder.quantity
-
+      incomingOrder.quantity = incomingOrder.quantity -adjustOrder.quantity
       return existingBook.concat(adjustOrder)
     }
 
@@ -47,7 +45,7 @@ function reconcileOrder(existingBook, incomingOrder) {
 
       let [adjustOrder] = existingBook.splice(i, 1)
       incomingOrder.quantity = incomingOrder.quantity - adjustOrder.quantity
-
+      i--
       // return existingBook.concat(incomingOrder)
     }
 
@@ -57,15 +55,18 @@ function reconcileOrder(existingBook, incomingOrder) {
     // uses two existing orders to partially fulfill an order, removing the matching orders from the book and reducing the incoming order before adding it to the book
 
 
-
-
-
-
     //for this function, we know the order objects have the same type && price
     // function fulfillOrders(existingOrder, incomingOrder) { // existingOrder = object, incomingOrder = object
     // if (existingOrder.quantity === incomingOrder.quantity) {
     // existingOrder.quantity = 0
     // incomingOrder.quantity = 0
+    if (incomingOrder.quantity === 0) {
+      break
+    }
+  }
+  if (incomingOrder.quantity > 0) {
+    existingBook.push(incomingOrder)
+    return existingBook
   }
 }
 
