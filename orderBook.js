@@ -51,8 +51,4 @@ function reconcileOrder(existingBook, incomingOrder) {
   }
 }
 
-// handle the other conditions (else if)
-//handle the last condition (else)
-
-
 module.exports = reconcileOrder
