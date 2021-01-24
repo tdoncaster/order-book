@@ -1,6 +1,5 @@
 function reconcileOrder(existingBook, incomingOrder) {
 
-  //book = array of objects, incoming = object
   if (existingBook.length === 0) {
     existingBook.push(incomingOrder)
     return existingBook
@@ -8,18 +7,16 @@ function reconcileOrder(existingBook, incomingOrder) {
 
   for (let i = 0; i < existingBook.length; i++) {
 
-    const order = existingBook[i] //get one order object
+    const order = existingBook[i] 
     if (order.type === incomingOrder.type) {
       continue
     }
 
-    // if order type is equal ('buy' && 'buy') || ('sell' && 'sell') but does not match add to order book
     if (incomingOrder.type !== order.type && incomingOrder.price !== order.price) {
 
       return existingBook.concat(incomingOrder)
     }
 
-    // attempt to fufill orders and remove existing order if there is existing order with same QTY
     if (incomingOrder.price === order.price && incomingOrder.quantity === order.quantity
       && incomingOrder.type !== order.type) {
 
@@ -27,8 +24,6 @@ function reconcileOrder(existingBook, incomingOrder) {
       return existingBook
     }
 
-
-    // fulfills an order and reduces the matching order when the book contains a matching order of a larger quantity
     if (incomingOrder.price === order.price && incomingOrder.quantity < order.quantity &&
       incomingOrder.type !== order.type) {
 
@@ -38,28 +33,14 @@ function reconcileOrder(existingBook, incomingOrder) {
       return existingBook.concat(adjustOrder)
     }
 
-
-    // uses two existing orders to completely fulfill an order, removing the matching orders from the book'
     if (incomingOrder.price === order.price && incomingOrder.quantity >= order.quantity &&
       incomingOrder.type !== order.type) {
 
       let [adjustOrder] = existingBook.splice(i, 1)
       incomingOrder.quantity = incomingOrder.quantity - adjustOrder.quantity
       i--
-      // return existingBook.concat(incomingOrder)
     }
 
-
-    //  uses two existing orders to completely fulfill an order, removing the first matching order from the book and reducing the second
-
-    // uses two existing orders to partially fulfill an order, removing the matching orders from the book and reducing the incoming order before adding it to the book
-
-
-    //for this function, we know the order objects have the same type && price
-    // function fulfillOrders(existingOrder, incomingOrder) { // existingOrder = object, incomingOrder = object
-    // if (existingOrder.quantity === incomingOrder.quantity) {
-    // existingOrder.quantity = 0
-    // incomingOrder.quantity = 0
     if (incomingOrder.quantity === 0) {
       break
     }
