@@ -1,9 +1,11 @@
 const { expect } = require('chai')
-const { describe, it } = require('mocha')
+// const { describe, it } = require('mocha')
 const reconcileOrder = require('./orderBook')
 
+// eslint-disable-next-line no-undef
 describe('Order Book', () => {
   describe('reconcileOrder', () => {
+    // eslint-disable-next-line no-undef
     it('adds an order to the book when the book is empty and thus cannot fulfill the order', () => {
       const existingBook = []
       const incomingOrder = { type: 'sell', quantity: 10, price: 6150 }
@@ -64,7 +66,7 @@ describe('Order Book', () => {
       expect(updatedBook).to.deep.equal([{ type: 'sell', quantity: 12, price: 5950 }, { type: 'sell', quantity: 5, price: 6150 }])
     })
 
-    it('uses two existing orders to completely fulfill an order, removing the matching orders from the book', () => {
+    it.only('uses two existing orders to completely fulfill an order, removing the matching orders from the book', () => {
       const existingBook = [{ type: 'buy', quantity: 10, price: 6150 }, { type: 'buy', quantity: 5, price: 6150 }, { type: 'sell', quantity: 12, price: 5950 }]
       const incomingOrder = { type: 'sell', quantity: 15, price: 6150 }
 
@@ -91,7 +93,7 @@ describe('Order Book', () => {
       expect(updatedBook).to.deep.equal([{ type: 'sell', quantity: 12, price: 6950 }, { type: 'sell', quantity: 5, price: 6150 }])
     })
 
-    it.skip('Extra Credit: it fulfills a mismatched order when both parties benefit', () => {
+    it('Extra Credit: it fulfills a mismatched order when both parties benefit', () => {
       const existingBook = [{ type: 'buy', quantity: 15, price: 6000 }, { type: 'sell', quantity: 12, price: 6950 }]
       const incomingOrder = { type: 'sell', quantity: 15, price: 5900 }
 
@@ -100,7 +102,7 @@ describe('Order Book', () => {
       expect(updatedBook).to.deep.equal([{ type: 'sell', quantity: 12, price: 6950 }])
     })
 
-    it.skip('Extra Credit: it does not fulfill a mismatched order when it does not benefit both parties', () => {
+    it('Extra Credit: it does not fulfill a mismatched order when it does not benefit both parties', () => {
       const existingBook = [{ type: 'buy', quantity: 15, price: 5900 }, { type: 'sell', quantity: 12, price: 6950 },]
       const incomingOrder = { type: 'sell', quantity: 15, price: 6000 }
 
